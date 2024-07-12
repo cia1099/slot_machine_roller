@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:slot_machine_roller/slot_machine_roller.dart';
 import 'package:flutter/material.dart';
 
