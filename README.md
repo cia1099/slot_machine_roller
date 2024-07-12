@@ -1,7 +1,9 @@
 # Slot Machine Roller 
 The easiest way to control slot machine.\
 You just use `setState` to pass to `target` parameter to deterministic value to stop rolling.\
-Otherwise pass `null` to `target` parameter to start rolling until no null. 
+Otherwise pass `null` to `target` parameter to start rolling until no null.
+
+Here is the [demo](https://cia1099.github.io/slot_machine_roller/) page.
 ## Features
 - Easy way to start/stop rolling.
 - Customized build items in roller.
