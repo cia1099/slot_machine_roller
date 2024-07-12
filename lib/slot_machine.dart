@@ -19,7 +19,7 @@ class SlotMachine extends StatelessWidget {
             Image.asset(
               "assets/machine.png",
               width: width,
-              package: 'slot_machine',
+              package: 'slot_machine_roller',
             ),
             Transform.translate(
               offset: Offset(screenSize.width / 6.4, screenSize.height * 0.94),
@@ -43,7 +43,7 @@ class SlotMachine extends StatelessWidget {
                                 'assets/slot$number.png',
                                 height: screenSize.height,
                                 width: screenSize.width / 3 - 1,
-                                package: 'slot_machine',
+                                package: 'slot_machine_roller',
                               ),
                               target: targets[index],
                               delay: Duration(milliseconds: 250 * (2 - index)),

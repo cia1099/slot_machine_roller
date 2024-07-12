@@ -1,16 +1,3 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
 # Slot Machine Roller 
 The easiest way to control slot machine. You just use `setState` to pass to `target` parameter to deterministic value to stop rolling. Otherwise pass `null` to `target` parameter to start rolling until no null. 
 ## Features
@@ -27,7 +14,7 @@ flutter pub add slot_machine_roller
 ```
 
 ## Usage
-You can see [example](page) for more details.
+You can see [example](https://github.com/cia1099/slot_machine_roller/blob/main/example/lib/main.dart) for more details.
 
 ```dart
 SlotMachineRoller(
@@ -54,14 +41,14 @@ SlotMachineRoller(
 setState(){
     target = 4;
 }
-// To start rolling until determination of target
+// To start rolling until deterministic target
 setState(){
     target = null; 
 }
 ```
+__Please Note the height of item should as equal as the height of SlotMachineRoller. Because we expect the view only one item in roller.__ 
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+The assets images are referred from\
+https://github.com/josex2r/jQuery-SlotMachine.

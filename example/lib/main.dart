@@ -34,19 +34,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 1;
-  late final pipe = StreamController()..add(_counter);
-  var targets = List<int?>.filled(3, null);
+  var targets = List<int?>.filled(3, 6);
+  int? target = 4;
 
   void _incrementCounter() {
-    pipe.add(_counter++);
-    final rng = Random();
     setState(() {
-      if (targets.every((element) => element == null)) {
-        targets = List.generate(3, (index) => rng.nextInt(6) + 1);
-      } else {
-        targets = List<int?>.filled(3, null);
-      }
+      targets = List<int?>.filled(3, null);
+      target = null;
     });
   }
 
@@ -58,54 +52,98 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: SlotMachine(targets: targets),
-        // StreamBuilder(
-        //     initialData: 0,
-        //     stream:
-        //         Stream.periodic(Duration(seconds: 2), (count) => count).take(4),
-        //     builder: (context, snapshot) {
-        //       final data = snapshot.data!;
-        //       final target = (data > 0 && data % 2 == 1) ? 4 : null;
-        //       return Column(
-        //         mainAxisAlignment: MainAxisAlignment.center,
-        //         children: <Widget>[
-        //           SlotMachineRoller(
-        //               height: 170,
-        //               width: 300,
-        //               period: Duration(milliseconds: 1000),
-        //               delay: data == 0 ? Duration(seconds: 1) : Duration.zero,
-        //               reverse: true,
-        //               target: target,
-        //               itemBuilder: (e) => Container(
-        //                     margin: EdgeInsets.symmetric(vertical: 10),
-        //                     height: 150,
-        //                     width: 150,
-        //                     alignment: Alignment.center,
-        //                     decoration: BoxDecoration(
-        //                         shape: BoxShape.circle, color: Colors.blue),
-        //                     child: Text(
-        //                       '$e',
-        //                       style: Theme.of(context)
-        //                           .primaryTextTheme
-        //                           .headlineLarge,
-        //                     ),
-        //                   )),
-        //           const Text(
-        //             'You have pushed the button this many times:',
-        //           ),
-        //           Text(
-        //             '${snapshot.data}',
-        //             style: Theme.of(context).textTheme.headlineMedium,
-        //           ),
-        //         ],
-        //       );
-        //     }),
+        child: Column(
+          children: [
+            SlotMachine(targets: targets),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final width = (constraints.maxWidth).clamp(.0, 533.0);
+                final screenSize = Size(width / 1.5, width / 3.6);
+                final size = screenSize.width / 6;
+                return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(
+                        3,
+                        (i) => PopupMenuButton(
+                              constraints: BoxConstraints.tightFor(width: size),
+                              itemBuilder: (context) => List.generate(
+                                6,
+                                (index) => PopupMenuItem(
+                                    padding: EdgeInsets.zero,
+                                    value: index + 1,
+                                    height: kMinInteractiveDimension / 2,
+                                    child: imageSelected(index + 1, size)),
+                              ),
+                              onSelected: (value) => setState(() {
+                                targets[i] = value;
+                              }),
+                              child: imageSelected(targets[i], size),
+                            )));
+              },
+            ),
+            Expanded(child: SizedBox()),
+            Row(
+              children: [
+                SlotMachineRoller(
+                    height: 100,
+                    width: 120,
+                    reverse: true,
+                    target: target,
+                    itemBuilder: (e) => ballCreater(e, context)),
+                PopupMenuButton(
+                  constraints: BoxConstraints.tightFor(width: 80),
+                  itemBuilder: (context) => List.generate(
+                    6,
+                    (index) => PopupMenuItem(
+                        padding: EdgeInsets.zero,
+                        value: index + 1,
+                        height: kMinInteractiveDimension / 2,
+                        child: ballCreater(index + 1, context)),
+                  ),
+                  onSelected: (value) => setState(() {
+                    target = value;
+                  }),
+                  child: ballCreater(target, context),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        tooltip: 'Rolling',
+        child: const Icon(Icons.rocket_launch_outlined),
       ),
+    );
+  }
+
+  Widget ballCreater(int? e, BuildContext context) {
+    if (e == null) {
+      return Icon(Icons.question_mark, size: 80);
+    }
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      height: 80,
+      width: 80,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
+      child: Text(
+        '$e',
+        style: Theme.of(context).primaryTextTheme.headlineLarge,
+      ),
+    );
+  }
+
+  Widget imageSelected(int? number, double size) {
+    if (number == null) {
+      return Icon(Icons.question_mark, size: size);
+    }
+    return Image.asset(
+      'assets/slot$number.png',
+      height: size,
+      width: size,
+      package: 'slot_machine_roller',
     );
   }
 }
