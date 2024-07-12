@@ -29,11 +29,11 @@ jobs:
 
       # 构建 Flutter Web 应用
       - name: Build Flutter Web
-        run: flutter build web --release
+        run: cd example && flutter build web --release
 
       # 部署到 GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build/web
+          publish_dir: example/build/web
