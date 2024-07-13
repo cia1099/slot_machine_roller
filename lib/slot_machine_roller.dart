@@ -70,12 +70,8 @@ class _SlotMachineRollerState extends State<SlotMachineRoller> {
             final cached = before == null
                 ? <int>[]
                 : <int>[before!] +
-                    (List.generate(
-                        widget.period.inMilliseconds ~/ 125,
-                        (index) =>
-                            widget.minTarget +
-                            rng.nextInt(
-                                widget.maxTarget - widget.minTarget + 1)));
+                    (List.generate(widget.period.inMilliseconds ~/ 125,
+                        (index) => getRandomTarget()));
             if (data != null) {
               cached.add(data);
               before = data;
@@ -111,16 +107,19 @@ class _SlotMachineRollerState extends State<SlotMachineRoller> {
 
   Stream<int> startPipe() async* {
     pipeClosed = false;
-    final lastData = before ?? widget.target ?? rng.nextInt(6) + 1;
+    final lastData = before ?? widget.target ?? getRandomTarget();
     before = null;
     yield lastData;
     await Future.delayed(widget.delay);
     before = null;
     while (widget.target == null) {
-      yield before == null ? lastData : rng.nextInt(6) + 1;
+      yield before == null ? lastData : getRandomTarget();
       await Future.delayed(widget.period);
     }
     pipeClosed = true;
     yield widget.target!;
   }
+
+  int getRandomTarget() =>
+      widget.minTarget + rng.nextInt(widget.maxTarget - widget.minTarget + 1);
 }
